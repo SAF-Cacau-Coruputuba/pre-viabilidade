@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estudo de Pré-Viabilidade — Cacauicultura SAF · Vale do Paraíba</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+/* ─── TOKENS ────────────────────────────────────────────────── */
+:root {
+  --cream:    #f6f1e9;
+  --cream2:   #ede6d8;
+  --ink:      #1a1a16;
+  --ink2:     #4a4a42;
+  --green:    #2b5c3e;
+  --green2:   #1a3828;
+  --green3:   #3f7a57;
+  --green-lt: #e6f0eb;
+  --amber:    #b86e22;
+  --amber-lt: #fdf0e0;
+  --red-lt:   #fdecea;
+  --red:      #952b26;
+  --border:   rgba(43,92,62,0.15);
+  --serif:    'Playfair Display', Georgia, serif;
+  --sans:     'DM Sans', system-ui, sans-serif;
+  --mono:     'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* ─── LAYOUT ────────────────────────────────────────────────── */
+.page-wrap { max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
+
+/* ─── STICKY NAV ────────────────────────────────────────────── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(246,241,233,0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+}
+.nav-inner {
+  max-width: 900px; margin: 0 auto;
+  display: flex; align-items: center; gap: 0; height: 52px;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+}
+.nav-inner::-webkit-scrollbar { display: none; }
+nav a {
+  font-size: 12px; font-weight: 500; letter-spacing: .03em;
+  color: var(--ink2); text-decoration: none; white-space: nowrap;
+  padding: 0 14px; height: 52px; display: flex; align-items: center;
+  border-bottom: 2px solid transparent; transition: color .15s, border-color .15s;
+}
+nav a:hover, nav a.active { color: var(--green); border-bottom-color: var(--green); }
+.nav-logo {
+  font-family: var(--serif); font-size: 13px; color: var(--green2);
+  font-weight: 700; padding-right: 18px; border-right: 1px solid var(--border);
+  margin-right: 4px; white-space: nowrap; flex-shrink: 0;
+}
+
+/* ─── COVER ────────────────────────────────────────────────── */
+.cover {
+  padding: 72px 0 56px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 64px;
+}
+.cover-kicker {
+  font-size: 11px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--green3); margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+}
+.cover-kicker::before {
+  content: ''; display: inline-block; width: 24px; height: 1px; background: var(--green3);
+}
+h1 {
+  font-family: var(--serif); font-size: clamp(32px,5vw,52px);
+  line-height: 1.12; color: var(--green2); font-weight: 700;
+  margin-bottom: 20px; max-width: 720px;
+}
+h1 em { font-style: italic; color: var(--amber); }
+.cover-sub {
+  font-size: 17px; color: var(--ink2); max-width: 600px; line-height: 1.65;
+  margin-bottom: 36px;
+}
+.meta-row {
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+}
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 500; border-radius: 100px;
+  padding: 5px 12px; white-space: nowrap; letter-spacing: .02em;
+}
+.badge-green  { background: var(--green-lt); color: var(--green2); }
+.badge-amber  { background: var(--amber-lt); color: var(--amber); }
+.badge-cream  { background: var(--cream2); color: var(--ink2); border: 1px solid var(--border); }
+.badge-dot::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor;
+  display: inline-block; animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+/* ─── SECTION ────────────────────────────────────────────────── */
+.section { margin-bottom: 72px; scroll-margin-top: 68px; }
+h2 {
+  font-family: var(--serif); font-size: 28px; font-weight: 700;
+  color: var(--green2); margin-bottom: 6px; line-height: 1.2;
+}
+.section-num {
+  font-family: var(--mono); font-size: 11px; color: var(--green3);
+  letter-spacing: .08em; margin-bottom: 10px; display: block;
+}
+h3 {
+  font-family: var(--serif); font-size: 19px; font-weight: 500;
+  color: var(--green2); margin: 32px 0 12px;
+}
+p { margin-bottom: 16px; color: var(--ink2); }
+p:last-child { margin-bottom: 0; }
+strong { color: var(--ink); font-weight: 500; }
+.divider { width: 48px; height: 2px; background: var(--amber); margin: 16px 0 28px; }
+
+/* ─── CALLOUT ────────────────────────────────────────────────── */
+.callout {
+  background: var(--green-lt); border-left: 3px solid var(--green);
+  border-radius: 0 8px 8px 0; padding: 16px 20px; margin: 24px 0; font-size: 15px;
+}
+.callout.amber { background: var(--amber-lt); border-left-color: var(--amber); }
+.callout.red   { background: var(--red-lt); border-left-color: var(--red); }
+.callout-label { font-size: 10px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 4px; }
+.callout.amber .callout-label { color: var(--amber); }
+.callout.red   .callout-label { color: var(--red); }
+.callout:not(.amber):not(.red) .callout-label { color: var(--green); }
+
+/* ─── DATA TABLE ────────────────────────────────────────────── */
+.data-table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 16px 0; }
+.data-table th {
+  font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink2); text-align: left; padding: 0 12px 10px; border-bottom: 1px solid var(--border);
+}
+.data-table td {
+  padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--ink2); vertical-align: middle;
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: rgba(43,92,62,.03); }
+.pill {
+  display: inline-block; border-radius: 100px; font-size: 10px; font-weight: 500;
+  padding: 2px 8px; white-space: nowrap; font-family: var(--mono);
+}
+
+/* ─── CARDS ────────────────────────────────────────────────── */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin: 24px 0; }
+.metric-card {
+  background: var(--cream2); border-radius: 10px; padding: 18px 20px;
+}
+.metric-card .label { font-size: 11px; color: var(--ink2); margin-bottom: 6px; }
+.metric-card .value { font-family: var(--serif); font-size: 28px; color: var(--green2); line-height: 1; margin-bottom: 4px; }
+.metric-card .sub { font-size: 11px; color: var(--ink2); opacity: .7; }
+
+/* ─── FINANCIAL WIDGET ──────────────────────────────────────── */
+.fin-widget {
+  background: #fff; border: 1px solid var(--border); border-radius: 12px;
+  padding: 28px; margin: 24px 0;
+}
+.fin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+@media(max-width:640px){ .fin-grid { grid-template-columns: 1fr; } }
+.slider-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.slider-row label { font-size: 13px; color: var(--ink2); flex: 1; min-width: 130px; }
+.slider-row input[type=range] { flex: 2; accent-color: var(--green); }
+.slider-row .val { font-family: var(--mono); font-size: 12px; min-width: 72px; text-align: right; color: var(--ink); }
+.fin-metric { background: var(--cream2); border-radius: 8px; padding: 14px 16px; margin-bottom: 12px; }
+.fin-metric .lbl { font-size: 11px; color: var(--ink2); margin-bottom: 4px; }
+.fin-metric .num { font-family: var(--serif); font-size: 24px; color: var(--green2); }
+.fin-metric .sub { font-size: 11px; color: var(--ink2); opacity: .65; }
+.widget-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--ink2); margin-bottom: 20px; }
+.chart-wrap { position: relative; height: 220px; margin-top: 20px; }
+
+/* ─── VARIETY TABLE ─────────────────────────────────────────── */
+.var-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.var-table th { font-size: 10px; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; color: var(--ink2); padding: 0 6px 10px; border-bottom: 1px solid var(--border); text-align: center; }
+.var-table th:first-child { text-align: left; }
+.var-table td { padding: 8px 6px; border-bottom: 1px solid var(--border); vertical-align: middle; text-align: center; }
+.var-table td:first-child { text-align: left; font-weight: 500; font-family: var(--mono); font-size: 13px; }
+.var-table tr:last-child td { border-bottom: none; }
+.var-table tr:hover td { background: rgba(43,92,62,.04); }
+
+/* ─── SAF SVG CONTAINER ─────────────────────────────────────── */
+.saf-container {
+  background: #fff; border: 1px solid var(--border); border-radius: 12px;
+  padding: 24px 20px; margin: 24px 0; overflow-x: auto;
+}
+
+/* ─── RISK TABLE ────────────────────────────────────────────── */
+.risk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+@media(max-width:580px){ .risk-grid { grid-template-columns: 1fr; } }
+.risk-card {
+  border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; font-size: 14px;
+}
+.risk-card .risk-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.risk-card .risk-level { font-family: var(--mono); font-size: 10px; font-weight: 500; border-radius: 100px; padding: 2px 8px; }
+.risk-card .risk-name { font-weight: 500; font-size: 14px; }
+.risk-card p { font-size: 13px; color: var(--ink2); margin: 0; }
+.level-alto   { background: #fdecea; color: #8b2420; }
+.level-medio  { background: #fdf0e0; color: #8a5010; }
+.level-baixo  { background: var(--green-lt); color: var(--green2); }
+
+/* ─── TIMELINE ──────────────────────────────────────────────── */
+.timeline { position: relative; padding-left: 28px; margin: 16px 0; }
+.timeline::before { content:''; position:absolute; left:8px; top:6px; bottom:6px; width:1px; background: var(--border); }
+.tl-item { position: relative; margin-bottom: 28px; }
+.tl-item:last-child { margin-bottom: 0; }
+.tl-dot {
+  position: absolute; left: -24px; top: 5px; width: 10px; height: 10px;
+  border-radius: 50%; background: var(--cream); border: 2px solid var(--green3);
+}
+.tl-item.done .tl-dot { background: var(--green); border-color: var(--green); }
+.tl-item.next .tl-dot { background: var(--amber); border-color: var(--amber); }
+.tl-period { font-family: var(--mono); font-size: 11px; color: var(--green3); margin-bottom: 2px; }
+.tl-title  { font-weight: 500; font-size: 14px; color: var(--ink); margin-bottom: 4px; }
+.tl-desc   { font-size: 13px; color: var(--ink2); }
+
+/* ─── SOURCES ──────────────────────────────────────────────── */
+.sources { font-size: 12px; color: var(--ink2); opacity: .7; border-top: 1px solid var(--border); padding-top: 20px; margin-top: 20px; }
+.sources a { color: var(--green3); text-decoration: none; }
+.sources a:hover { text-decoration: underline; }
+
+/* ─── FOOTER ────────────────────────────────────────────────── */
+footer {
+  border-top: 1px solid var(--border); padding: 32px 24px;
+  text-align: center; font-size: 12px; color: var(--ink2); opacity: .65;
+  max-width: 900px; margin: 0 auto;
+}
+/* ─── PRINT ─────────────────────────────────────────────────── */
+@media print {
+  nav { display: none; }
+  .cover { padding-top: 0; }
+  .fin-widget, .saf-container { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== STICKY NAVIGATION ===== -->
+<nav>
+  <div class="nav-inner">
+    <span class="nav-logo">Cacau · Vale do Paraíba</span>
+    <a href="#contexto">Contexto</a>
+    <a href="#clima">Aptidão Climática</a>
+    <a href="#saf">Sistema SAF</a>
+    <a href="#variedades">Variedades</a>
+    <a href="#financeiro">Financeiro</a>
+    <a href="#mercado">Mercado</a>
+    <a href="#riscos">Riscos</a>
+    <a href="#proximos">Próximos Passos</a>
+  </div>
+</nav>
+
+<!-- ===== PAGE CONTENT ===== -->
+<div class="page-wrap">
+
+<!-- ───────────── COVER ───────────── -->
+<div class="cover">
+  <p class="cover-kicker">Estudo de Pré-Viabilidade · v0.1</p>
+  <h1>Cacauicultura em <em>Sistema Agroflorestal</em><br>no Vale do Paraíba</h1>
+  <p class="cover-sub">
+    Análise preliminar de aptidão agroclimática, sistema produtivo e viabilidade econômica
+    para produção de cacau (Theobroma cacao) na região do Vale do Paraíba, interior de São Paulo.
+  </p>
+  <div class="meta-row">
+    <!-- ===ATUALIZAR: nome do projeto / empresa / local exato === -->
+    <span class="badge badge-green badge-dot">Piloto ativo — 1,5 ha</span>
+    <span class="badge badge-amber">Pré-viabilidade</span>
+    <span class="badge badge-cream">Vale do Paraíba · SP</span>
+    <span class="badge badge-cream" id="doc-date"></span>
+    <span class="badge badge-cream">8 cultivares em teste</span>
+  </div>
+</div>
+
+<!-- ───────────── 1. CONTEXTO ───────────── -->
+<section class="section" id="contexto">
+  <span class="section-num">01 / CONTEXTO DO PROJETO</span>
+  <h2>Situação atual e escopo</h2>
+  <div class="divider"></div>
+
+  <p>
+    O projeto encontra-se em fase de <strong>ideia inicial / pré-viabilidade</strong>,
+    com um piloto de campo em operação desde março de 2025.
+    O objetivo é avaliar a aptidão agronômica, econômica e de mercado para a produção
+    de cacau em escala de <strong>50 a 200 hectares</strong> na região do Vale do Paraíba,
+    utilizando o modelo de <strong>Sistema Agroflorestal (SAF)</strong> com múltiplas espécies.
+  </p>
+
+  <div class="card-grid">
+    <!-- ===ATUALIZAR: métricas conforme piloto avança === -->
+    <div class="metric-card">
+      <p class="label">Área do piloto</p>
+      <p class="value">1,5 ha</p>
+      <p class="sub">área baixa, irrigada</p>
+    </div>
+    <div class="metric-card">
+      <p class="label">Mudas plantadas</p>
+      <p class="value">450</p>
+      <p class="sub">março de 2025 · ~300/ha</p>
+    </div>
+    <div class="metric-card">
+      <p class="label">Cultivares em teste</p>
+      <p class="value">8</p>
+      <p class="sub">trial comparativo</p>
+    </div>
+    <div class="metric-card">
+      <p class="label">Escopo de expansão</p>
+      <p class="value">50–200 ha</p>
+      <p class="sub">horizonte de decisão</p>
+    </div>
+  </div>
+
+  <h3>Espécies do SAF planejadas</h3>
+  <p>O sistema integra quatro estratos verticais, com as seguintes espécies além do cacau:</p>
+  <table class="data-table">
+    <thead><tr><th>Espécie</th><th>Estrato</th><th>Função principal</th><th>Status</th></tr></thead>
+    <tbody>
+      <!-- ===ATUALIZAR: status conforme plantio avançar === -->
+      <tr><td>Cacau (8 cultivares)</td><td>Médio · 2–5m</td><td>Produto principal</td><td><span class="pill" style="background:#e6f0eb;color:#1a3828">Plantado</span></td></tr>
+      <tr><td>Banana (Musa sp.)</td><td>Médio-alto · 4–8m</td><td>Sombreamento temporário + renda antecipada</td><td><span class="pill" style="background:#fdf0e0;color:#8a5010">A plantar</span></td></tr>
+      <tr><td>Palmito juçara (Euterpe edulis)</td><td>Superior · 9–15m</td><td>Sombra permanente + produto premium</td><td><span class="pill" style="background:#fdf0e0;color:#8a5010">A plantar</span></td></tr>
+      <tr><td>Ervas aromáticas e medicinais</td><td>Baixo · 0–1m</td><td>Cobertura do solo + diversificação de renda</td><td><span class="pill" style="background:#fdf0e0;color:#8a5010">A plantar</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ───────────── 2. APTIDÃO CLIMÁTICA ───────────── -->
+<section class="section" id="clima">
+  <span class="section-num">02 / APTIDÃO CLIMÁTICA E EDÁFICA</span>
+  <h2>Viabilidade da região</h2>
+  <div class="divider"></div>
+
+  <p>
+    O zoneamento agroclimático do Instituto Agronômico de Campinas (CIIAGRO) posiciona
+    parte do Vale do Paraíba na <strong>Faixa "A"</strong> de aptidão para o cacaueiro —
+    a faixa mais favorável, com temperatura média anual acima de 21°C e déficit hídrico
+    abaixo de 40 mm, sem restrições térmicas ou hídricas significativas.
+    A parte baixa do vale enquadra-se na Faixa "B" (deficiência hídrica moderada de 40–100 mm),
+    classificada como marginal à cultura.
+  </p>
+
+  <h3>Parâmetros críticos</h3>
+  <table class="data-table">
+    <thead><tr><th>Parâmetro</th><th>Exigência do cacaueiro</th><th>Vale do Paraíba (típico)</th><th>Avaliação</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Temperatura média anual</td><td>≥ 21°C</td><td>20–23°C (varia por altitude)</td>
+        <td><span class="pill" style="background:#e6f0eb;color:#1a3828">Adequado</span></td>
+      </tr>
+      <tr>
+        <td>Precipitação anual</td><td>1.200–2.000 mm</td><td>1.200–1.700 mm</td>
+        <td><span class="pill" style="background:#e6f0eb;color:#1a3828">Adequado</span></td>
+      </tr>
+      <tr>
+        <td>Déficit hídrico</td><td>&lt; 40 mm (ideal)</td><td>20–80 mm (variável)</td>
+        <td><span class="pill" style="background:#fdf0e0;color:#8a5010">Moderado</span></td>
+      </tr>
+      <tr>
+        <td>Risco de geadas</td><td>Intolerante</td><td>Presente acima de 600 m de altitude</td>
+        <td><span class="pill" style="background:#fdf0e0;color:#8a5010">Atenção à altitude</span></td>
+      </tr>
+      <tr>
+        <td>Sombreamento</td><td>Necessário na fase jovem</td><td>Boa disponibilidade em SAF</td>
+        <td><span class="pill" style="background:#e6f0eb;color:#1a3828">Favorável</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout amber">
+    <p class="callout-label">Fator limitante principal</p>
+    <p>A altitude é o principal risco para o Vale do Paraíba. Áreas acima de 600–700 m apresentam risco de geadas e noites frias que podem comprometer a floração e o pegamento de frutos. <strong>A seleção criteriosa das glebas</strong>, priorizando fundos de vale e encostas com bom balanço térmico, é a primeira ação do estudo detalhado. A área do piloto atual, por ser baixa, está bem posicionada.</p>
+  </div>
+
+  <h3>Solo</h3>
+  <p>
+    O Vale do Paraíba apresenta predominância de Latossolos Vermelho-Amarelos e Argissolos,
+    com fertilidade natural variável. Para o cacaueiro, os requisitos fundamentais são:
+    profundidade efetiva superior a 1 metro, boa drenagem interna, pH entre 6,0 e 7,0
+    e teor adequado de matéria orgânica. A topografia acidentada em partes da região pode
+    elevar os custos de mecanização e implantação — argumento adicional para priorizar
+    áreas planas ou suavemente onduladas, como a do piloto atual.
+  </p>
+</section>
+
+<!-- ───────────── 3. SISTEMA SAF ───────────── -->
+<section class="section" id="saf">
+  <span class="section-num">03 / SISTEMA AGROFLORESTAL</span>
+  <h2>Design do SAF</h2>
+  <div class="divider"></div>
+
+  <p>
+    O modelo adotado é o <strong>SAF com cacau sob sombreamento moderado (20–40%)</strong>,
+    estruturado em quatro estratos verticais. A densidade atual do piloto é de aproximadamente
+    300 plantas de cacau por hectare (espaçamento ~4m × 8m ou equivalente), adequada para
+    a integração das demais espécies nas entrelinhas e aleias.
+  </p>
+
+  <div class="saf-container">
+    <p style="font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:#4a4a42;margin-bottom:20px">
+      Estratificação vertical do SAF — corte esquemático
+    </p>
+    <svg width="100%" viewBox="0 0 680 385" role="img" style="min-width:460px">
+      <title>Corte vertical do SAF com quatro estratos</title>
+      <desc>Palmito juçara no estrato superior (9–15m), banana (5–9m), cacau (1–5m) e ervas medicinais no estrato baixo (0–1m)</desc>
+
+      <rect x="75" y="328" width="582" height="4" fill="#c5bfb0"/>
+      <rect x="75" y="332" width="582" height="50" fill="#ede8dc" opacity="0.7"/>
+      <g stroke="#c5bfb0" stroke-width="0.7" fill="none">
+        <line x1="153" y1="332" x2="142" y2="373"/><line x1="160" y1="332" x2="164" y2="369"/>
+        <line x1="270" y1="332" x2="258" y2="370"/><line x1="278" y1="332" x2="282" y2="366"/>
+        <line x1="392" y1="332" x2="379" y2="372"/><line x1="402" y1="332" x2="409" y2="368"/>
+        <line x1="512" y1="332" x2="500" y2="370"/><line x1="520" y1="332" x2="524" y2="366"/>
+      </g>
+      <text font-family="'DM Mono',monospace" font-size="11" fill="#8a7f6e" x="655" y="356" text-anchor="end">zona de raízes</text>
+
+      <line x1="75" y1="307" x2="635" y2="307" stroke="#c5bfb0" stroke-width="0.5" stroke-dasharray="4 3"/>
+      <line x1="75" y1="244" x2="635" y2="244" stroke="#c5bfb0" stroke-width="0.5" stroke-dasharray="4 3"/>
+      <line x1="75" y1="160" x2="635" y2="160" stroke="#c5bfb0" stroke-width="0.5" stroke-dasharray="4 3"/>
+
+      <text font-family="'DM Sans',sans-serif" font-size="12" fill="#4a4a42" x="68" y="320" text-anchor="end" font-weight="500">Ervas</text>
+      <text font-family="'DM Mono',monospace" font-size="10" fill="#8a7f6e" x="68" y="331" text-anchor="end">0–1m</text>
+      <text font-family="'DM Sans',sans-serif" font-size="12" fill="#4a4a42" x="68" y="276" text-anchor="end" font-weight="500">Cacau</text>
+      <text font-family="'DM Mono',monospace" font-size="10" fill="#8a7f6e" x="68" y="287" text-anchor="end">1–5m</text>
+      <text font-family="'DM Sans',sans-serif" font-size="12" fill="#4a4a42" x="68" y="203" text-anchor="end" font-weight="500">Banana</text>
+      <text font-family="'DM Mono',monospace" font-size="10" fill="#8a7f6e" x="68" y="214" text-anchor="end">5–9m</text>
+      <text font-family="'DM Sans',sans-serif" font-size="12" fill="#4a4a42" x="68" y="120" text-anchor="end" font-weight="500">Juçara</text>
+      <text font-family="'DM Mono',monospace" font-size="10" fill="#8a7f6e" x="68" y="131" text-anchor="end">9–15m</text>
+
+      <!-- Palmito juçara -->
+      <rect x="151" y="76" width="4" height="256" fill="#d6cfc0" stroke="#8a7a65" stroke-width="0.5" rx="2"/>
+      <g stroke="#2b5c3e" stroke-width="2" stroke-linecap="round" fill="none">
+        <line x1="153" y1="76" x2="111" y2="46"/><line x1="153" y1="76" x2="131" y2="33"/>
+        <line x1="153" y1="76" x2="153" y2="27"/><line x1="153" y1="76" x2="175" y2="33"/>
+        <line x1="153" y1="76" x2="195" y2="46"/><line x1="153" y1="76" x2="202" y2="62"/>
+        <line x1="153" y1="76" x2="106" y2="62"/>
+      </g>
+      <text font-family="'DM Sans',sans-serif" font-size="12" fill="#1a3828" font-weight="500" x="153" y="17" text-anchor="middle">Palmito juçara</text>
+      <text font-family="'DM Mono',monospace" font-size="10" fill="#8a7f6e" x="153" y="28" text-anchor="middle">Euterpe edulis</text>
+
+      <!-- Cacau 1 -->
+      <rect x="268" y="272" width="4" height="56" fill="#d6cfc0" stroke="#8a7a65" stroke-width="0.5" rx="2"/>
+      <ellipse cx="270" cy="256" rx="58" ry="22" fill="#a8d4b8" stroke="#2b5c3e" stroke-width="1"/>
+      <text font-family="'DM Sans',sans-serif" font-size="12" fill="#1a3828" font-weight="500" x="270" y="305" text-anchor="middle">Cacau</text>
+      <text font-family="'DM Mono',monospace" font-size="10" fill="#8a7f6e" x="270" y="316" text-anchor="middle">8 clones</text>
+
+      <!-- Banana -->
+      <rect x="388" y="202" width="10" height="126" fill="#d6cfc0" stroke="#8a7a65" stroke-width="0.5" rx="3"/>
+      <ellipse cx="364" cy="194" rx="52" ry="11" transform="rotate(-28 364 194)" fill="#b8da88" stroke="#3f7a57" stroke-width="1"/>
+      <ellipse cx="422" cy="194" rx="52" ry="11" transform="rotate(28 422 194)" fill="#b8da88" stroke="#3f7a57" stroke-width="1"/>
+      <ellipse cx="393" cy="188" rx="52" ry="11" fill="#b8da88" stroke="#3f7a57" stroke-width="1"/>
+      <text font-family="'DM Sans',sans-serif" font-size="12" fill="#1a3828" font-weight="500" x="393" y="149" text-anchor="middle">Banana</text>
+      <text font-family="'DM Mono',monospace" font-size="10" fill="#8a7f6e" x="393" y="160" text-anchor="middle">abrigo + renda inicial</text>
+
+      <!-- Cacau 2 -->
+      <rect x="510" y="272" width="4" height="56" fill="#d6cfc0" stroke="#8a7a65" stroke-width="0.5" rx="2"/>
+      <ellipse cx="512" cy="256" rx="58" ry="22" fill="#a8d4b8" stroke="#2b5c3e" stroke-width="1"/>
+      <text font-family="'DM Sans',sans-serif" font-size="12" fill="#1a3828" font-weight="500" x="512" y="305" text-anchor="middle">Cacau</text>
+
+      <!-- Herbs -->
+      <g fill="#f0d896" stroke="#b86e22" stroke-width="0.5">
+        <ellipse cx="107" cy="322" rx="14" ry="7"/><ellipse cx="132" cy="325" rx="11" ry="6"/>
+        <ellipse cx="215" cy="321" rx="13" ry="7"/><ellipse cx="239" cy="324" rx="10" ry="5"/>
+        <ellipse cx="335" cy="321" rx="14" ry="7"/><ellipse cx="360" cy="324" rx="10" ry="5"/>
+        <ellipse cx="456" cy="321" rx="13" ry="7"/><ellipse cx="480" cy="324" rx="10" ry="5"/>
+        <ellipse cx="567" cy="321" rx="14" ry="7"/><ellipse cx="593" cy="324" rx="11" ry="6"/>
+      </g>
+      <text font-family="'DM Mono',monospace" font-size="10" fill="#8a7f6e" x="393" y="314" text-anchor="middle">capim-limão · cúrcuma · gengibre · citronela · outras ervas</text>
+    </svg>
+  </div>
+
+  <h3>Prioridade de implantação das espécies</h3>
+  <div class="timeline">
+    <div class="tl-item done">
+      <div class="tl-dot"></div>
+      <p class="tl-period">Mar 2025 — concluído</p>
+      <p class="tl-title">Plantio do cacau + instalação da irrigação</p>
+      <p class="tl-desc">450 mudas plantadas (8 cultivares), irrigação instalada, área baixa consolidada.</p>
+    </div>
+    <div class="tl-item next">
+      <div class="tl-dot"></div>
+      <p class="tl-period">Próximo passo urgente</p>
+      <p class="tl-title">Integração da banana nas entrelinhas</p>
+      <!-- ===ATUALIZAR: data de plantio da banana quando definida === -->
+      <p class="tl-desc">100–150 plantas por hectare (densid. ~4–6m nas aleias), variedade Prata ou equivalente local. Gera sombreamento para o cacau jovem e renda a partir do mês 8–12.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <p class="tl-period">Médio prazo</p>
+      <p class="tl-title">Palmito juçara nas aleias permanentes</p>
+      <p class="tl-desc">40–60 plantas/ha nas aleias maiores (4–6m do cacau). Euterpe edulis — native Mata Atlântica, primeiro palmito aos 4–7 anos, açaí nativo como produto secundário de alto valor.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <p class="tl-period">Médio prazo · quando houver sombra parcial</p>
+      <p class="tl-title">Ervas aromáticas e medicinais no estrato baixo</p>
+      <!-- ===ATUALIZAR: espécies selecionadas conforme decisão do projeto === -->
+      <p class="tl-desc">Capim-limão, cúrcuma, gengibre, vetiver (controle de erosão em área baixa), citronela, melissa. Geram caixa antes do cacau atingir platô produtivo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── 4. VARIEDADES ───────────── -->
+<section class="section" id="variedades">
+  <span class="section-num">04 / TRIAL DE CULTIVARES</span>
+  <h2>As 8 cultivares em teste</h2>
+  <div class="divider"></div>
+
+  <p>
+    O piloto testa simultaneamente 8 cultivares selecionadas, permitindo comparação direta
+    de adaptação às condições locais do Vale do Paraíba. As variedades foram agrupadas
+    em quatro perfis estratégicos com base em dados de produtividade, resistência fitossanitária
+    e qualidade de amêndoa para chocolate.
+  </p>
+
+  <div class="callout">
+    <p class="callout-label">Resistência dupla — destaque do trial</p>
+    <p>O clone <strong>PS1319</strong> é o único do conjunto com resistência confirmada tanto à vassoura-de-bruxa (<em>Moniliophthora perniciosa</em>) quanto à murcha-de-Ceratocystis (<em>Ceratocystis cacaofunesta</em>). Em região não tradicional como o Vale do Paraíba, esse perfil é particularmente valioso.</p>
+  </div>
+
+  <div style="overflow-x:auto;margin:20px 0">
+    <table class="var-table" id="var-table">
+      <thead>
+        <tr>
+          <th>Clone</th>
+          <th>Produtiv.</th>
+          <th>V. bruxa</th>
+          <th>Ceratocystis</th>
+          <th>Chocolate</th>
+          <th>SAF</th>
+          <th>Grupo</th>
+        </tr>
+      </thead>
+      <tbody id="var-tbody"></tbody>
+    </table>
+  </div>
+
+  <div id="var-legend" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;font-size:12px"></div>
+
+  <h3>Notas por grupo estratégico</h3>
+  <p>
+    <strong>Backbone produtivo (SJ02, BN34, CCN51):</strong> são os clones com maior índice de
+    produtividade relativa em estudos comparativos da CEPLAC, formando o núcleo de volume.
+    O SJ02 lidera em produtividade mas é suscetível à Ceratocystis — risco a monitorar.
+    O CCN51 tem boa produtividade e resistência à vassoura-de-bruxa, mas requer protocolo
+    específico de pós-colheita para expressar qualidade sensorial adequada para chocolate fino.
+  </p>
+  <p>
+    <strong>Qualidade especial (PH16, PS1319):</strong> são as variedades com maior potencial
+    para diferenciação de mercado. Pesquisa sensorial demonstrou que chocolates do PH16 têm
+    cor mais escura, aroma mais intenso e maior intenção de compra. O PS1319 combina boa
+    qualidade com o perfil de resistência dupla mencionado acima.
+  </p>
+  <p>
+    <strong>Monitorar (CEPEC2002, CCN10):</strong> variedades oficialmente recomendadas
+    pela CEPLAC, com boa aptidão para SAF. Aguardam confirmação de desempenho local.
+  </p>
+  <p>
+    <strong>Atenção (CP49):</strong> apresentou os piores índices de eficiência nos
+    estudos comparativos disponíveis. Recomenda-se acompanhar de perto no piloto
+    antes de incluir na eventual expansão.
+  </p>
+
+  <!-- ===ATUALIZAR: adicionar dados de campo do piloto conforme disponíveis === -->
+  <div class="callout amber" style="margin-top:24px">
+    <p class="callout-label">Dados de campo a coletar no piloto</p>
+    <p>Para cada cultivar: taxa de pegamento e vigor vegetativo, mês de início de floração,
+    ocorrência de sintomas fitossanitários, e comportamento em dias secos (murcha relativa).
+    Esses dados proprietários substituirão as estimativas bibliográficas na próxima versão deste documento.</p>
+  </div>
+</section>
+
+<!-- ───────────── 5. FINANCEIRO ───────────── -->
+<section class="section" id="financeiro">
+  <span class="section-num">05 / MODELO FINANCEIRO</span>
+  <h2>Análise de viabilidade econômica</h2>
+  <div class="divider"></div>
+
+  <p>
+    O modelo financeiro abaixo é baseado em benchmarks de estudos de viabilidade
+    publicados pela CocoaAction Brasil, Instituto Arapyaú e WRI Brasil, adaptados
+    para o sistema SAF em região não tradicional. Todos os parâmetros são ajustáveis
+    — use os controles para explorar diferentes cenários.
+  </p>
+
+  <!-- Interactive financial widget -->
+  <div class="fin-widget">
+    <p class="widget-title">Modelo financeiro interativo — SAF cacau · 20 anos</p>
+    <div class="fin-grid">
+      <div>
+        <div class="slider-row">
+          <label>Área (ha)</label>
+          <input type="range" min="50" max="200" step="10" value="100" id="f-area" oninput="finCalc()">
+          <span class="val" id="f-area-v">100 ha</span>
+        </div>
+        <div class="slider-row">
+          <label>Preço arroba (R$)</label>
+          <input type="range" min="100" max="700" step="10" value="250" id="f-preco" oninput="finCalc()">
+          <span class="val" id="f-preco-v">R$ 250</span>
+        </div>
+        <div class="slider-row">
+          <label>Produtividade (@/ha)</label>
+          <input type="range" min="15" max="80" step="5" value="35" id="f-prod" oninput="finCalc()">
+          <span class="val" id="f-prod-v">35 @/ha</span>
+        </div>
+        <div class="slider-row">
+          <label>CAPEX/ha (R$ mil)</label>
+          <input type="range" min="20" max="90" step="5" value="45" id="f-capex" oninput="finCalc()">
+          <span class="val" id="f-capex-v">R$ 45k</span>
+        </div>
+        <div class="slider-row">
+          <label>Custo anual/ha (R$ mil)</label>
+          <input type="range" min="4" max="20" step="1" value="8" id="f-custo" oninput="finCalc()">
+          <span class="val" id="f-custo-v">R$ 8k</span>
+        </div>
+      </div>
+      <div>
+        <div class="fin-metric">
+          <p class="lbl">Investimento total (CAPEX)</p>
+          <p class="num" id="f-inv">R$ 4,5M</p>
+          <p class="sub" id="f-inv-sub">para 100 ha</p>
+        </div>
+        <div class="fin-metric">
+          <p class="lbl">Receita bruta anual (platô)</p>
+          <p class="num" id="f-rec">R$ 875k</p>
+          <p class="sub">a partir do ano 7–9</p>
+        </div>
+        <div class="fin-metric">
+          <p class="lbl">TIR estimada (20 anos)</p>
+          <p class="num" id="f-tir">—</p>
+          <p class="sub">horizonte de 20 anos</p>
+        </div>
+        <div class="fin-metric">
+          <p class="lbl">Payback estimado</p>
+          <p class="num" id="f-pay">—</p>
+          <p class="sub">anos para recuperar CAPEX</p>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:#4a4a42;margin-top:24px;margin-bottom:12px">Fluxo de caixa acumulado — 20 anos</p>
+    <div class="chart-wrap">
+      <canvas id="fin-chart" role="img" aria-label="Gráfico de fluxo de caixa acumulado ao longo de 20 anos"></canvas>
+    </div>
+    <div style="display:flex;gap:16px;margin-top:12px;font-size:11px;color:#8a7a65">
+      <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:#a8d4b8;display:inline-block"></span>Fluxo positivo</span>
+      <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:#f0a8a8;display:inline-block"></span>Fluxo negativo</span>
+    </div>
+  </div>
+
+  <div class="callout amber">
+    <p class="callout-label">Premissas do modelo</p>
+    <p>CAPEX distribuído 60%/40% nos anos 0 e 1. Ramp-up de produção: 0%, 0%, 5%, 15%, 30%, 55%, 75%, 90%, 97%, 100% do platô. Sem receita da banana ou ervas no modelo (são buffers positivos não contabilizados). Referência bibliográfica: CocoaAction Brasil / Arapyaú (2021); CNA Campo Futuro.</p>
+  </div>
+
+  <h3>Benchmarks de referência (literatura)</h3>
+  <table class="data-table">
+    <thead><tr><th>Sistema produtivo</th><th>Região</th><th>TIR</th><th>Renda/ha/ano</th><th>Fonte</th></tr></thead>
+    <tbody>
+      <tr><td>SAF agroflorestal (diversificado)</td><td>Pará</td><td>15,8–17,3%</td><td>R$ 5.133–8.623</td><td>CocoaAction/Arapyaú 2021</td></tr>
+      <tr><td>Cabruca baixo sombreamento</td><td>Bahia</td><td>12%</td><td>R$ 5.400</td><td>CocoaAction/Arapyaú 2021</td></tr>
+      <tr><td>Pleno sol sequeiro</td><td>Bahia</td><td>16%</td><td>R$ 10.500</td><td>CocoaAction/Arapyaú 2021</td></tr>
+      <tr><td>Pleno sol irrigado</td><td>Bahia</td><td>15%</td><td>R$ 14.300</td><td>CocoaAction/Arapyaú 2021</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ───────────── 6. MERCADO ───────────── -->
+<section class="section" id="mercado">
+  <span class="section-num">06 / CONTEXTO DE MERCADO</span>
+  <h2>Mercado e posicionamento</h2>
+  <div class="divider"></div>
+
+  <div class="callout red">
+    <p class="callout-label">Alerta de volatilidade — Fev 2026</p>
+    <p>O mercado de cacau passou por colapso de preços recente: de R$ 1.029/arroba (pico em dez/2024) para R$ 155–175/arroba (fev/2026), queda de ~85%. O modelo financeiro deve ser calibrado com cenários conservadores. O preço base de R$ 250/arroba na simulação acima representa um cenário moderadamente pessimista.</p>
+  </div>
+
+  <p>
+    O Brasil é reconhecido pela ICCO (Organização Internacional do Cacau) como
+    exportador de 100% de cacau fino desde 2019. Produtores na região Sudeste,
+    sem o histórico de doenças do sul da Bahia e com acesso ao mercado
+    consumidor de chocolate premium de São Paulo e Rio de Janeiro, têm
+    vantagem comparativa para o segmento de cacau fino e origin-specific.
+  </p>
+
+  <h3>Estratégias de diferenciação recomendadas para o Vale do Paraíba</h3>
+  <p>
+    Em vez de competir em volume com Pará e Bahia, o projeto se beneficia
+    de posicionamento no segmento de valor agregado: contratos diretos com
+    chocolateiros artesanais da região Sudeste, certificação de origem
+    (indicação geográfica a desenvolver), rastreabilidade do bean-to-bar,
+    e aproveitamento do turismo rural do Vale (cafés, experiences).
+  </p>
+  <!-- ===ATUALIZAR: adicionar contatos/acordos comerciais quando formalizados === -->
+</section>
+
+<!-- ───────────── 7. RISCOS ───────────── -->
+<section class="section" id="riscos">
+  <span class="section-num">07 / GESTÃO DE RISCOS</span>
+  <h2>Matriz de riscos</h2>
+  <div class="divider"></div>
+
+  <div class="risk-grid">
+    <div class="risk-card">
+      <div class="risk-header">
+        <span class="risk-level level-alto">Alto</span>
+        <span class="risk-name">Volatilidade de preço</span>
+      </div>
+      <p>Mercado oscilou +/- 85% em 14 meses. Mitigação: contratos a prazo, mercado de chocolate fino (preço-prêmio), diversificação com banana, palmito e ervas.</p>
+    </div>
+    <div class="risk-card">
+      <div class="risk-header">
+        <span class="risk-level level-medio">Médio</span>
+        <span class="risk-name">Geadas / temperatura</span>
+      </div>
+      <p>Risco real acima de 600 m. Mitigação: seleção de glebas adequadas (áreas baixas), sistema de irrigação (já instalado), monitoramento microclimático.</p>
+    </div>
+    <div class="risk-card">
+      <div class="risk-header">
+        <span class="risk-level level-medio">Médio</span>
+        <span class="risk-name">Maturação longa do capital</span>
+      </div>
+      <p>Geração de caixa relevante apenas a partir do ano 3–5. Mitigação: renda antecipada com banana (ano 1) e ervas (ano 2); linhas de crédito rural (Pronaf Floresta, BNDES SAF).</p>
+    </div>
+    <div class="risk-card">
+      <div class="risk-header">
+        <span class="risk-level level-baixo">Baixo atual</span>
+        <span class="risk-name">Vassoura-de-bruxa</span>
+      </div>
+      <p>Região não tradicional — doença ainda não estabelecida localmente. Mitigação preventiva: preferência por cultivares resistentes (PH16, BN34, CEPEC2002, PS1319) na expansão.</p>
+    </div>
+    <div class="risk-card">
+      <div class="risk-header">
+        <span class="risk-level level-baixo">Baixo atual</span>
+        <span class="risk-name">Ceratocystis</span>
+      </div>
+      <p>Suscetível: SJ02, CCN51, PH16, CCN10. Resistente: PS1319. Monitorar no piloto e ajustar mix varietal antes da expansão.</p>
+    </div>
+    <div class="risk-card">
+      <div class="risk-header">
+        <span class="risk-level level-medio">Médio</span>
+        <span class="risk-name">Déficit técnico regional</span>
+      </div>
+      <p>Sem cadeia de assistência técnica local para cacau no Vale do Paraíba. Mitigação: parceria com CEPLAC (polo em Linhares-ES mais próximo), ESALQ/USP, e produtores de referência.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── 8. PRÓXIMOS PASSOS ───────────── -->
+<section class="section" id="proximos">
+  <span class="section-num">08 / PRÓXIMOS PASSOS</span>
+  <h2>Roteiro de evolução do projeto</h2>
+  <div class="divider"></div>
+
+  <!-- ===ATUALIZAR: marcar etapas como concluídas conforme avançar === -->
+  <div class="timeline">
+    <div class="tl-item next">
+      <div class="tl-dot"></div>
+      <p class="tl-period">Curto prazo — imediato</p>
+      <p class="tl-title">Integrar banana no piloto</p>
+      <p class="tl-desc">Plantar 150–220 mudas de banana nas entrelinhas do piloto de 1,5 ha. Prioridade máxima para sombreamento do cacau jovem.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <p class="tl-period">Curto prazo</p>
+      <p class="tl-title">Iniciar protocolo de monitoramento das 8 cultivares</p>
+      <p class="tl-desc">Fichas individuais por clone: vigor, floração, fitossanidade, comportamento hídrico. Registros mensais fotográficos e agronômicos.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <p class="tl-period">Médio prazo — 6 meses</p>
+      <p class="tl-title">Análise de solo e visita a produtores de referência</p>
+      <p class="tl-desc">Análise completa (pH, matéria orgânica, textura, micronutrientes) nas glebas candidatas à expansão. Visita técnica a Tomé-Açu (PA) e/ou sul da Bahia para benchmarking operacional.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <p class="tl-period">Médio prazo — 6–12 meses</p>
+      <p class="tl-title">Integrar palmito juçara e ervas medicinais no piloto</p>
+      <p class="tl-desc">Completar a estratificação do SAF de 1,5 ha com as espécies planejadas.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <p class="tl-period">Marco de decisão — 12–18 meses</p>
+      <p class="tl-title">Avaliação de desempenho varietal e decisão de escala</p>
+      <p class="tl-desc">Com dados do piloto em mão: selecionar 3–4 cultivares para expansão, definir área e modelo financeiro detalhado. Acionar linhas de crédito rural se aplicável.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <p class="tl-period">Longo prazo — ano 2+</p>
+      <p class="tl-title">Expansão para 50–200 ha</p>
+      <p class="tl-desc">Implantação faseada baseada nos dados do piloto e nas condições de mercado e financiamento disponíveis.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── SOURCES ───────────── -->
+<section class="section">
+  <h2 style="font-size:20px">Fontes e metodologia</h2>
+  <div class="divider"></div>
+  <div class="sources">
+    <p><strong>Aptidão climática:</strong> CIIAGRO/IAC-SP — Carta de Aptidão Climática para Cacauicultura no Estado de São Paulo. Disponível em ciiagro.sp.gov.br.</p>
+    <p><strong>Análise financeira:</strong> CocoaAction Brasil, Instituto Arapyaú e WRI Brasil — <em>Viabilidade Econômica de Sistemas Produtivos com Cacau</em>, out/2021. Disponível em <a href="https://arapyau.org.br/viabilidade-economica-de-sistemas-produtivos-com-cacau/">arapyau.org.br</a>.</p>
+    <p><strong>Custos de implantação:</strong> CNA/Campo Futuro — Levantamentos de custo de produção de cacau 2023. Agrolink (2025): sistema pleno sol &gt; R$ 130k/ha.</p>
+    <p><strong>Dados de cultivares (produtividade):</strong> CEPLAC — <em>Avaliação de Clones de Cacaueiro</em>. Revista Agrotrópica, v.33, n.1, 2021.</p>
+    <p><strong>Resistência fitossanitária:</strong> SciELO — <em>Resistência de progênies de cacaueiro à murcha-de-Ceratocystis</em>. Tropical Plant Pathology, 2018.</p>
+    <p><strong>Qualidade sensorial (PH16):</strong> SciELO — <em>Sensory profiles of chocolates produced from cocoa cultivars resistant to Moniliophtora Perniciosa</em>. Brazilian Journal of Food Technology.</p>
+    <p><strong>Mercado e preços:</strong> Cacau &amp; Chocolate (fev/2026); Trading Economics — Cocoa Futures; ICCO International Cocoa Organization.</p>
+    <p style="margin-top:12px;border-top:1px solid var(--border);padding-top:12px"><em>Este documento é de natureza preliminar e será atualizado conforme o progresso do piloto e a realização de análises complementares. Os dados financeiros são estimativas baseadas em benchmarks da literatura e não constituem projeção de resultado.</em></p>
+  </div>
+</section>
+
+</div><!-- .page-wrap -->
+
+<footer>
+  Cacauicultura SAF · Vale do Paraíba, SP · Documento vivo — v0.1 · Pré-Viabilidade
+  <!-- ===ATUALIZAR: nome do projeto/empresa quando definido === -->
+</footer>
+
+<!-- ═══ SCRIPTS ═══════════════════════════════════════════════ -->
+<script>
+/* ----- DATE ----- */
+document.getElementById('doc-date').textContent =
+  'Atualizado: ' + new Date().toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+
+/* ----- VARIETY TABLE ----- */
+const vars=[
+  {n:'SJ02',      p:5,vb:3,cr:1,ql:4,sf:4,g:'backbone'},
+  {n:'BN34',      p:4,vb:5,cr:0,ql:3,sf:4,g:'backbone'},
+  {n:'CCN51',     p:4,vb:5,cr:1,ql:3,sf:3,g:'backbone'},
+  {n:'PH16',      p:3,vb:5,cr:1,ql:5,sf:4,g:'qualidade'},
+  {n:'PS1319',    p:3,vb:4,cr:5,ql:4,sf:3,g:'qualidade'},
+  {n:'CEPEC2002', p:3,vb:5,cr:0,ql:3,sf:4,g:'monitor'},
+  {n:'CCN10',     p:3,vb:3,cr:1,ql:3,sf:4,g:'monitor'},
+  {n:'CP49',      p:2,vb:2,cr:0,ql:2,sf:2,g:'atencao'},
+];
+const pL =['','baixa','média','boa','alta','muito alta'];
+const rL =['','suscetível','baixa','moderada','boa','resistente'];
+const qlL=['','limitada','regular','indústria','boa','excepcional'];
+const sfL=['','sem adapt.','limitada','meia sombra','boa','ideal'];
+const sS={
+  5:{bg:'#e6f0eb',c:'#1a3828'},4:{bg:'#eaf3de',c:'#27500a'},
+  3:{bg:'#fdf0e0',c:'#7a4010'},2:{bg:'#fdecea',c:'#7a2420'},
+  1:{bg:'#fdecea',c:'#952b26'},0:{bg:'#f1ede4',c:'#6a6460'}
+};
+const gS={
+  backbone: {bg:'#e6f0eb',c:'#1a3828',label:'Backbone produtivo'},
+  qualidade:{bg:'#f0edf8',c:'#3a2070',label:'Qualidade especial'},
+  monitor:  {bg:'#fdf0e0',c:'#7a4010',label:'Monitorar'},
+  atencao:  {bg:'#fdecea',c:'#7a2420',label:'Atenção'},
+};
+function pill(sc,labs){
+  const s=sS[sc]||sS[0];
+  const t=sc===0?'n/d':(labs[sc]||sc);
+  return `<span class="pill" style="background:${s.bg};color:${s.c}">${t}</span>`;
+}
+const tb=document.getElementById('var-tbody');
+/* ===ATUALIZAR: adicionar coluna de dados de campo quando disponível === */
+vars.forEach(v=>{
+  const gs=gS[v.g];
+  tb.innerHTML+=`<tr>
+    <td>${v.n}</td>
+    <td>${pill(v.p,pL)}</td><td>${pill(v.vb,rL)}</td>
+    <td>${pill(v.cr,rL)}</td><td>${pill(v.ql,qlL)}</td>
+    <td>${pill(v.sf,sfL)}</td>
+    <td><span class="pill" style="background:${gs.bg};color:${gs.c}">${gs.label}</span></td>
+  </tr>`;
+});
+const leg=document.getElementById('var-legend');
+Object.values(gS).forEach(v=>{
+  leg.innerHTML+=`<span style="display:inline-flex;align-items:center;gap:5px">
+    <span style="width:10px;height:10px;border-radius:2px;background:${v.bg};border:1px solid ${v.c};flex-shrink:0;display:inline-block"></span>${v.label}
+  </span>`;
+});
+
+/* ----- FINANCIAL MODEL ----- */
+let chartInst=null;
+function calcTIR(fl){
+  let r=0.1;
+  for(let i=0;i<200;i++){
+    let n=0,d=0;
+    fl.forEach((f,t)=>{n+=f/Math.pow(1+r,t);d-=t*f/Math.pow(1+r,t+1);});
+    const r2=r-n/d; if(Math.abs(r2-r)<0.0001)return r2; r=r2;
+  } return r;
+}
+function fmt(v){return'R$ '+(v>=1e6?(v/1e6).toFixed(1)+'M':v>=1e3?(v/1e3).toFixed(1)+'k':v.toFixed(0));}
+function finCalc(){
+  const area=+document.getElementById('f-area').value;
+  const preco=+document.getElementById('f-preco').value;
+  const prod=+document.getElementById('f-prod').value;
+  const capexHa=+document.getElementById('f-capex').value*1000;
+  const custoHa=+document.getElementById('f-custo').value*1000;
+  document.getElementById('f-area-v').textContent=area+' ha';
+  document.getElementById('f-preco-v').textContent='R$ '+preco;
+  document.getElementById('f-prod-v').textContent=prod+' @/ha';
+  document.getElementById('f-capex-v').textContent='R$ '+document.getElementById('f-capex').value+'k';
+  document.getElementById('f-custo-v').textContent='R$ '+document.getElementById('f-custo').value+'k';
+  const capex=capexHa*area, recBruta=preco*prod*area, custo=custoHa*area;
+  document.getElementById('f-inv').textContent=fmt(capex);
+  document.getElementById('f-inv-sub').textContent='para '+area+' ha';
+  document.getElementById('f-rec').textContent=fmt(recBruta);
+  const ramp=[0,0,0.05,0.15,0.30,0.55,0.75,0.90,0.97,1];
+  const fl=[];
+  for(let t=0;t<=20;t++){
+    const frac=t<ramp.length?ramp[t]:1;
+    const rec=preco*prod*area*frac;
+    const imp=t===0?capex*0.6:t===1?capex*0.4:0;
+    const c=t===0?0:custo;
+    fl.push(rec-c-imp);
+  }
+  const tir=calcTIR(fl);
+  let cum=0,pb=null;
+  const cumArr=fl.map((f,i)=>{cum+=f;if(pb===null&&cum>=0)pb=i;return Math.round(cum/1000);});
+  document.getElementById('f-tir').textContent=isFinite(tir)&&tir>0?(tir*100).toFixed(1)+'%':'< 0%';
+  document.getElementById('f-pay').textContent=pb!==null?pb+' anos':'> 20 anos';
+  const colors=cumArr.map(v=>v>=0?'#a8d4b8':'#f0a8a8');
+  const labels=Array.from({length:21},(_,i)=>'Ano '+i);
+  if(chartInst)chartInst.destroy();
+  chartInst=new Chart(document.getElementById('fin-chart'),{
+    type:'bar',
+    data:{labels,datasets:[{label:'Fluxo acumulado (R$ mil)',data:cumArr,backgroundColor:colors,borderRadius:3,borderSkipped:false}]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        y:{ticks:{callback:v=>'R$'+v+'k',font:{size:10},color:'#8a7a65'},grid:{color:'rgba(43,92,62,0.07)'}},
+        x:{ticks:{font:{size:10},color:'#8a7a65',autoSkip:true,maxTicksLimit:11},grid:{display:false}}
+      }
+    }
+  });
+}
+finCalc();
+
+/* ----- ACTIVE NAV LINK ----- */
+const sections=document.querySelectorAll('section[id],div[id]');
+const navLinks=document.querySelectorAll('nav a');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      navLinks.forEach(l=>l.classList.remove('active'));
+      const a=document.querySelector(`nav a[href="#${e.target.id}"]`);
+      if(a)a.classList.add('active');
+    }
+  });
+},{rootMargin:'-40% 0px -55% 0px'});
+sections.forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>
